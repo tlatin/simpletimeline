@@ -1,0 +1,1 @@
+A simple timeline service. Publish an event to the service with an author and content. Use search to return a sorted list of events from multiple authors.
