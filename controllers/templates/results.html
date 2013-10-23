@@ -1,0 +1,15 @@
+<html>
+  <body>
+    <h1>Hello Search Results</h1>
+    {{range .}}
+      <p> On {{.Date}}
+      {{with .AuthorId}}
+        <b>{{.}}</b> wrote:
+      {{else}}
+        An anonymous person wrote:
+      {{end}}
+      </p>
+      <pre>{{.Content}}</pre>
+    {{end}}
+  </body>
+</html>

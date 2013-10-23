@@ -1,0 +1,10 @@
+{{define "new_event_form"}}
+<form action="/event/new" method="post">
+  <table>
+    <tr><td>Application Key:</td><td><input name="applicationKey" size="140" placeholder='example-id'></input></td></tr>
+    <tr><td>Event Content:</td><td><input name="content" size="140" placeholder='Lorem ipsum dolor sit amet'></input></td><tr>
+    <tr><td>Author ID:</td><td><input name="authorId" size="140" placeholder='AAAA'></input></td></tr>
+  </table>
+  <div><input type="submit" value="Add Timeline Event?"></div>
+</form>
+{{end}}

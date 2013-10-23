@@ -1,0 +1,31 @@
+<html>
+  <title>SimpleTimelineService</title>
+  <body>
+    <h1>SimpleTimelineService</h1>
+    <hr>
+    <h2>Create a new Application</h2>
+    {{ template "new_application_form" .}}
+    <hr>
+    <h2>Create a new Event</h2>
+    {{ template "new_event_form" .}}
+    {{if .}}
+      <hr>
+      <h2>Search by CreatorId</h2>
+      {{template "query_form" .}}
+    {{end}}
+    {{if .}}
+      <hr>
+      <h2>All Events</h2>
+    {{end}}
+    {{range .}}
+      <p> On {{.Date}}
+      {{with .AuthorId}}
+        <b>{{.}}</b> wrote:
+      {{else}}
+        An anonymous person wrote:
+      {{end}}
+      </p>
+      <pre>{{.Content}}</pre>
+    {{end}}
+  </body>
+</html>

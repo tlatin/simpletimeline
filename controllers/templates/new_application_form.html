@@ -1,0 +1,9 @@
+{{define "new_application_form"}}
+<form action="/application/new" method="post">
+	<table>
+		<tr><td>Application Name</td><td><input size=140 name="name" placeholder='example name'></input></td></tr>
+	  	<tr><td>website url</td><td><input size=140 name="url" placeholder='www.example.com'></input></td></tr>
+	</table>
+	<input type=submit value="Create a new Application"></input>
+</form>
+{{end}}
