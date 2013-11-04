@@ -1,5 +1,7 @@
 package admin
 
+// Not currently being used.
+
 import (
 	"html/template"
 	"net/http"

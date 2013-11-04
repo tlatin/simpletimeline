@@ -1,7 +1,11 @@
-{{define "query_form"}}
+{{define "search_query_form"}}
 <form action="/search/new" method="post">
 	<table>
+		{{if .WebKey}}
+		<input type="hidden" size=140 name="applicationId" value="{{.WebKey}}"></input>
+		{{ else }}
 		<tr><td>ApplicationId</td> <td><input size=140 name="applicationId" placeholder='example-id'></input></td></tr>
+		{{ end }}
 	  <tr><td>Query String</td> <td><input size=140 name="query" placeholder='["AAAA"]'></input></td></tr>
 	</table>
 	<input type=submit value="submit json query"></input>

@@ -1,13 +1,11 @@
 <html>
+	<title>"{{.Name}} "Application Events</title>
 	<body>
-		[
-	    {{range .}}
-	    	{
-	    		"key": "This is where the key goes",
-	      		"name": "{{.Name}}",
-	      		"url": "{{.Url}}",
-	      	}
-	    {{end}}
-	    ]
+		<h1>Create Events for Application "{{.Name}}"</h1>
+		<hr>
+		{{ template "new_event_form" .}}
+		<hr>
+		<h1>Search for Events within this application</h1>
+		{{ template "search_query_form" .}}
 	</body>
 </html>
