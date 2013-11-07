@@ -15,6 +15,7 @@ var searchTemplate = template.Must(
 	template.ParseFiles(
 		"controllers/templates/search_query.html",
 		"controllers/templates/search_query_form.html"))
+
 func Get(w http.ResponseWriter, r *http.Request) {
 	if err := searchTemplate.Execute(w, nil); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -22,9 +23,10 @@ func Get(w http.ResponseWriter, r *http.Request) {
 }
 
 var newSearchQueryTemplate = template.Must(template.ParseFiles("controllers/templates/results.html"))
+
 func Post(w http.ResponseWriter, r *http.Request) {
 	c := appengine.NewContext(r)
-	
+
 	applicationId := r.FormValue("applicationId")
 	applicationKey, err := datastore.DecodeKey(applicationId)
 	if err != nil {

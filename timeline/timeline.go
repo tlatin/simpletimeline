@@ -1,9 +1,9 @@
 package Timeline
 
 import (
-	"time"
 	"appengine"
 	"appengine/datastore"
+	"time"
 )
 
 type Application struct {
@@ -52,7 +52,7 @@ func GetApplicationById(c appengine.Context, applicationId string) (app *Applica
 func NewApplication(name string, url string, c appengine.Context) (key datastore.Key, err error) {
 	app := Application{
 		Name: name,
-		Url: url,
+		Url:  url,
 	}
 	_, err = datastore.Put(c, datastore.NewIncompleteKey(c, "Application", nil), &app)
 	if err != nil {
@@ -63,19 +63,19 @@ func NewApplication(name string, url string, c appengine.Context) (key datastore
 
 type Event struct {
 	// An Application is used as the ancestor for each event.
-	AuthorId      string
-	Content       string
-	Date          time.Time
+	AuthorId string
+	Content  string
+	Date     time.Time
 }
 
 func NewEvent(application *datastore.Key, authorId string, content string, c appengine.Context) error {
-	te := Event{		
-		AuthorId:      authorId,
-		Content:       content,
-		Date:          time.Now(),
+	te := Event{
+		AuthorId: authorId,
+		Content:  content,
+		Date:     time.Now(),
 	}
 	_, err := datastore.Put(c, datastore.NewIncompleteKey(c, "TimelineEvent", application), &te)
-	if err != nil {		
+	if err != nil {
 		return err
 	}
 	return nil

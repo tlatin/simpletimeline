@@ -10,7 +10,7 @@ import (
 
 var timelineTemplate = template.Must(
 	template.ParseFiles(
-		"controllers/templates/index.html", 
+		"controllers/templates/index.html",
 		"controllers/templates/new_application_form.html"))
 
 func Get(w http.ResponseWriter, r *http.Request) {
@@ -37,4 +37,3 @@ func Get(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
 }
-

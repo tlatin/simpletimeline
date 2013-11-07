@@ -16,5 +16,5 @@ func Post(w http.ResponseWriter, r *http.Request) {
 	if err := Timeline.NewEvent(applicationKey, r.FormValue("authorId"), r.FormValue("content"), c); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
-	http.Redirect(w, r, "/application/" + applicationKeyStr, http.StatusFound)	
+	http.Redirect(w, r, "/application/"+applicationKeyStr, http.StatusFound)
 }

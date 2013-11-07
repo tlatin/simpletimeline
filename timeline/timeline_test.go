@@ -1,9 +1,9 @@
 package Timeline
 
 import (
-	"time"
 	"sort"
 	"testing"
+	"time"
 )
 
 // t.Error for errors
@@ -13,12 +13,12 @@ func TestTimelineSorting(t *testing.T) {
 	older := Event{
 		AuthorId: "older",
 		Content:  "This event is in the past",
-		Date:     timestamp.Add(-1000*time.Second),
+		Date:     timestamp.Add(-1000 * time.Second),
 	}
 	newer := Event{
 		AuthorId: "newer",
 		Content:  "This event is now",
-		Date:     timestamp.Add(1000*time.Second),
+		Date:     timestamp.Add(1000 * time.Second),
 	}
 	events := []Event{newer, older}
 	sort.Sort(ByDate(events))

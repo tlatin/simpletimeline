@@ -4,10 +4,9 @@ import (
 	"appengine"
 	"html/template"
 	"net/http"
-	"timeline"
 	"regexp"
+	"timeline"
 )
-
 
 var newApplicationTemplate = template.Must(template.ParseFiles("controllers/templates/results.html"))
 var applicationsTemplate = template.Must(
@@ -29,7 +28,7 @@ func Get(w http.ResponseWriter, r *http.Request) {
 	} else {
 		applicationKey = &matches[1]
 	}
-	application, err := Timeline.GetApplicationById(c, *applicationKey); 
+	application, err := Timeline.GetApplicationById(c, *applicationKey)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -54,5 +53,3 @@ func Post(w http.ResponseWriter, r *http.Request) {
 	}
 	http.Redirect(w, r, "/", http.StatusFound)
 }
-
-
