@@ -28,7 +28,7 @@ func Get(w http.ResponseWriter, r *http.Request) {
 	} else {
 		applicationKey = &matches[1]
 	}
-	application, err := Timeline.GetApplicationById(c, *applicationKey)
+	application, err := Timeline.GetApplicationById(*applicationKey, c)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return

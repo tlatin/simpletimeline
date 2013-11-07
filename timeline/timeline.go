@@ -36,7 +36,7 @@ func GetAllApplications(c appengine.Context, dst []Application, limit int) (err 
 	return err
 }
 
-func GetApplicationById(c appengine.Context, applicationId string) (app *Application, err error) {
+func GetApplicationById(applicationId string, c appengine.Context) (app *Application, err error) {
 	key, err := datastore.DecodeKey(applicationId)
 	if err != nil {
 		return app, err
