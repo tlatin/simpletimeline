@@ -64,17 +64,13 @@ type Event struct {
 	Date     time.Time
 }
 
-func NewEvent(c appengine.Context, application *datastore.Key, authorId string, content string) error {
+func NewEvent(c appengine.Context, application *datastore.Key, authorId string, content string) (key *datastore.Key, err error) { {
 	te := Event{
 		AuthorId: authorId,
 		Content:  content,
 		Date:     time.Now(),
 	}
-	_, err := datastore.Put(c, datastore.NewIncompleteKey(c, "TimelineEvent", application), &te)
-	if err != nil {
-		return err
-	}
-	return nil
+	return datastore.Put(c, datastore.NewIncompleteKey(c, "TimelineEvent", application), &te)
 }
 
 // Methods required by sort.Interface.
