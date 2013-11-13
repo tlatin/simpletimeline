@@ -15,7 +15,7 @@ type Application struct {
 	WebKey string `datastore:"-"`
 }
 
-func GetApplicationKey(c appengine.Context, applicationKeyStr string) (key *datastore.Key, err error) {
+func GetApplicationKeyByString(c appengine.Context, applicationKeyStr string) (key *datastore.Key, err error) {
 	applicationKey, err := datastore.DecodeKey(applicationKeyStr)
 	if err != nil {
 		return key, err
@@ -36,8 +36,8 @@ func GetAllApplications(c appengine.Context, dst []Application, limit int) (err 
 	return err
 }
 
-func GetApplicationById(applicationId string, c appengine.Context) (app *Application, err error) {
-	key, err := datastore.DecodeKey(applicationId)
+func GetApplicationByEncodedKey(c appengine.Context, applicationKey string) (app *Application, err error) {
+	key, err := datastore.DecodeKey(applicationKey)
 	if err != nil {
 		return app, err
 	}
@@ -49,16 +49,12 @@ func GetApplicationById(applicationId string, c appengine.Context) (app *Applica
 	return application, err
 }
 
-func NewApplication(name string, url string, c appengine.Context) (key datastore.Key, err error) {
+func NewApplication(c appengine.Context, name string, url string) (key *datastore.Key, err error) {
 	app := Application{
 		Name: name,
 		Url:  url,
 	}
-	_, err = datastore.Put(c, datastore.NewIncompleteKey(c, "Application", nil), &app)
-	if err != nil {
-		return key, err
-	}
-	return
+	return datastore.Put(c, datastore.NewIncompleteKey(c, "Application", nil), &app)
 }
 
 type Event struct {
@@ -68,7 +64,7 @@ type Event struct {
 	Date     time.Time
 }
 
-func NewEvent(application *datastore.Key, authorId string, content string, c appengine.Context) error {
+func NewEvent(c appengine.Context, application *datastore.Key, authorId string, content string) error {
 	te := Event{
 		AuthorId: authorId,
 		Content:  content,

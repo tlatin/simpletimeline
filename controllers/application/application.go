@@ -28,7 +28,7 @@ func Get(w http.ResponseWriter, r *http.Request) {
 	} else {
 		applicationKey = &matches[1]
 	}
-	application, err := Timeline.GetApplicationById(*applicationKey, c)
+	application, err := Timeline.GetApplicationByEncodedKey(c, *applicationKey)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -45,7 +45,7 @@ func Post(w http.ResponseWriter, r *http.Request) {
 	url := r.FormValue("url")
 	// Validate URL
 	// Make sure it is absolute
-	if _, err := Timeline.NewApplication(name, url, c); err != nil {
+	if _, err := Timeline.NewApplication(c, name, url); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
 	if err := newApplicationTemplate.Execute(w, nil); err != nil {
