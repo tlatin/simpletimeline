@@ -38,20 +38,18 @@ func TestNewEvent(t *testing.T) {
 
 	authorId := "This is an Author ID"
 	content := "this is the content"
-	nilkey := new(datastore.Key)
-	key, err := NewEvent(c, nilkey, authorId, content)
+	key, err := NewEvent(c, nil, authorId, content)
 	if err != nil {
-		t.Error("Error Creating a new application: " + err.Error())
+		t.Error("Error Creating a new Event Object: " + err.Error())
+		return
 	}
 
 	event := new(Event)
 	if err := datastore.Get(c, key, event); err != nil {
 		t.Error("Error getting Event: " + err.Error())
-	}
-	if event.AuthorId != authorId {
+	} else if event.AuthorId != authorId {
 		t.Error("Returned event has the wrong authorId`")
-	}
-	if event.Content != content {
+	} else if event.Content != content {
 		t.Error("Returned event has the wrong content")
 	}
 }
@@ -68,16 +66,15 @@ func TestNewApplication(t *testing.T) {
 	key, err := NewApplication(c, name, url)
 	if err != nil {
 		t.Error("Error Creating a new application: " + err.Error())
+		return
 	}
 
 	app := new(Application)
 	if err := datastore.Get(c, key, app); err != nil {
 		t.Error("Error getting application: " + err.Error())
-	}
-	if app.Name != name {
+	} else if app.Name != name {
 		t.Error("Returned application has the wrong name")
-	}
-	if app.Url != url {
+	} else if app.Url != url {
 		t.Error("Returned application has the url name")
 	}
 
@@ -95,6 +92,7 @@ func TestGetApplicationByEncodedKey(t *testing.T) {
 	key, err := NewApplication(c, name, url)
 	if err != nil {
 		t.Error("Error Creating a new application: " + err.Error())
+		return
 	}
 
 	keystr := key.Encode()
@@ -105,11 +103,9 @@ func TestGetApplicationByEncodedKey(t *testing.T) {
 	app, err := GetApplicationByEncodedKey(c, keystr)
 	if err != nil {
 		t.Error("Error Retrieving an application: " + err.Error())
-	}	
-	if app.Name != name {
+	} else if app.Name != name {
 		t.Error("Returned application has the wrong name")
-	}
-	if app.Url != url {
+	} else if app.Url != url {
 		t.Error("Returned application has the url name")
 	}
 }
@@ -126,6 +122,7 @@ func TestGetApplicationKeyByString(t *testing.T) {
 	key, err := NewApplication(c, name, url)
 	if err != nil {
 		t.Error("Error Creating a new application: " + err.Error())
+		return
 	}
 
 	keystr := key.Encode()
@@ -136,8 +133,7 @@ func TestGetApplicationKeyByString(t *testing.T) {
 	appkey, err := GetApplicationKeyByString(c, keystr)
 	if err != nil {
 		t.Error("Error retrieving the key for the application: " + err.Error())
-	}	
-	if !key.Equal(appkey) {
+	} else if !key.Equal(appkey) {
 		t.Error("GetApplicationKeyByString doesn't match the Put() key")
 	}
 }

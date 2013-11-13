@@ -64,7 +64,7 @@ type Event struct {
 	Date     time.Time
 }
 
-func NewEvent(c appengine.Context, application *datastore.Key, authorId string, content string) (key *datastore.Key, err error) { {
+func NewEvent(c appengine.Context, application *datastore.Key, authorId string, content string) (key *datastore.Key, err error) {
 	te := Event{
 		AuthorId: authorId,
 		Content:  content,
