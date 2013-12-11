@@ -2,11 +2,11 @@ package application
 
 import (
 	"appengine"
+	"errors"
+	"github.com/tlatin/simpletimeline/timeline"
 	"html/template"
 	"net/http"
 	"regexp"
-	"timeline"
-	"errors"
 )
 
 var newApplicationTemplate = template.Must(template.ParseFiles("controllers/templates/results.html"))

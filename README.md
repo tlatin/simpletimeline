@@ -1,8 +1,7 @@
 A simple timeline service. Publish an event to the service with an author and content. Use search to return a sorted list of events from multiple authors.
 
 On check-in:
-% ~/go_appengine/goapp test ~/simpletimeline/timeline/*
-% ~/go_appengine/goapp test ~/simpletimeline/controllers/application/*
+% goapp test github.com/tlatin/simpletimeline/...
 run gofmt
 
 TODO:

@@ -1,10 +1,10 @@
 package route
 
 import (
-	"controllers/index"
-	"controllers/search"
-	"controllers/event"
-	"controllers/application"
+	"github.com/tlatin/simpletimeline/controllers/application"
+	"github.com/tlatin/simpletimeline/controllers/event"
+	"github.com/tlatin/simpletimeline/controllers/index"
+	"github.com/tlatin/simpletimeline/controllers/search"
 	"net/http"
 )
 

@@ -2,8 +2,8 @@ package event
 
 import (
 	"appengine"
+	"github.com/tlatin/simpletimeline/timeline"
 	"net/http"
-	"timeline"
 )
 
 func Post(w http.ResponseWriter, r *http.Request) {

@@ -4,11 +4,11 @@ import (
 	"appengine"
 	"appengine/datastore"
 	"encoding/json"
+	"github.com/tlatin/simpletimeline/timeline"
 	"html/template"
 	"log"
 	"net/http"
 	"sort"
-	"timeline"
 )
 
 var searchTemplate = template.Must(

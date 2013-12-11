@@ -3,9 +3,9 @@ package index
 import (
 	"appengine"
 	"appengine/datastore"
+	"github.com/tlatin/simpletimeline/timeline"
 	"html/template"
 	"net/http"
-	"timeline"
 )
 
 var timelineTemplate = template.Must(
