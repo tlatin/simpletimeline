@@ -2,6 +2,7 @@ A simple timeline service. Publish an event to the service with an author and co
 
 On check-in:
 % ~/go_appengine/goapp test ~/simpletimeline/timeline/*
+% ~/go_appengine/goapp test ~/simpletimeline/controllers/application/*
 run gofmt
 
 TODO:
