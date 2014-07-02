@@ -1,8 +1,12 @@
-application: simpletimeline
+application: simple-timeline
 version: 1
 runtime: go
 api_version: go1
 
 handlers:
+- url: /event/new
+  script: _go_app
+
 - url: /.*
   script: _go_app
+  login: admin

@@ -1,6 +1,7 @@
 A simple timeline service. Publish an event to the service with an author and content. Use search to return a sorted list of events from multiple authors.
 
 On check-in:
+// Make sure GOPATH is set.
 % goapp test github.com/tlatin/simpletimeline/...
 run gofmt
 
