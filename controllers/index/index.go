@@ -3,7 +3,7 @@ package index
 import (
 	"appengine"
 	"appengine/datastore"
-	"github.com/tlatin/simpletimeline/timeline"
+	"timeline"
 	"html/template"
 	"net/http"
 )

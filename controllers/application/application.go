@@ -3,7 +3,7 @@ package application
 import (
 	"appengine"
 	"errors"
-	"github.com/tlatin/simpletimeline/timeline"
+	"timeline"
 	"html/template"
 	"net/http"
 	"regexp"
