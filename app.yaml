@@ -7,6 +7,9 @@ handlers:
 - url: /event/new
   script: _go_app
 
+- url: /search/new
+  script: _go_app
+
 - url: /.*
   script: _go_app
   login: admin
