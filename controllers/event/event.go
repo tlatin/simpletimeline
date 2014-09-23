@@ -2,7 +2,7 @@ package event
 
 import (
 	"appengine"
-	"timeline"
+	"github.com/tlatin/simpletimeline/timeline"
 	"net/http"
 )
 

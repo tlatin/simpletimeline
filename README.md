@@ -2,13 +2,15 @@ A simple timeline service. Publish an event to the service with an author and co
 
 On check-in:
 // Make sure GOPATH is set.
-% goapp test github.com/tlatin/simpletimeline/...
+// From project directory
+% goapp test ./...
 run gofmt
 
 TODO:
+	dynamically change template path for goapp test ./...
+	Create JSON interface for search
 	Add testing for controllers
 	Add test for search Controller
 	Migrate Search logic to timeline file.
-	Create JSON interface for search
 	Add CORS headers to search interface
 	Add bootstrap & AJAX to appengine site

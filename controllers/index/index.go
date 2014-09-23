@@ -3,15 +3,15 @@ package index
 import (
 	"appengine"
 	"appengine/datastore"
-	"timeline"
+	"github.com/tlatin/simpletimeline/timeline"
 	"html/template"
 	"net/http"
 )
 
 var timelineTemplate = template.Must(
 	template.ParseFiles(
-		"controllers/templates/index.html",
-		"controllers/templates/new_application_form.html"))
+		"../controllers/templates/index.html",
+		"../controllers/templates/new_application_form.html"))
 
 func Get(w http.ResponseWriter, r *http.Request) {
 	c := appengine.NewContext(r)

@@ -3,19 +3,19 @@ package application
 import (
 	"appengine"
 	"errors"
-	"timeline"
+	"github.com/tlatin/simpletimeline/timeline"
 	"html/template"
 	"net/http"
 	"regexp"
 )
 
-var newApplicationTemplate = template.Must(template.ParseFiles("controllers/templates/results.html"))
+var newApplicationTemplate = template.Must(template.ParseFiles("../controllers/templates/results.html"))
 var applicationsTemplate = template.Must(
 	template.ParseFiles(
-		"controllers/templates/applications.html",
-		"controllers/templates/new_event_form.html",
-		"controllers/templates/search_query.html",
-		"controllers/templates/search_query_form.html"))
+		"../controllers/templates/applications.html",
+		"../controllers/templates/new_event_form.html",
+		"../controllers/templates/search_query.html",
+		"../controllers/templates/search_query_form.html"))
 
 func Get(w http.ResponseWriter, r *http.Request) {
 	c := appengine.NewContext(r)

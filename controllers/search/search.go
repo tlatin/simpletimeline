@@ -4,7 +4,7 @@ import (
 	"appengine"
 	"appengine/datastore"
 	"encoding/json"
-	"timeline"
+	"github.com/tlatin/simpletimeline/timeline"
 	"html/template"
 	"net/http"
 	"sort"
@@ -12,8 +12,8 @@ import (
 
 var searchTemplate = template.Must(
 	template.ParseFiles(
-		"controllers/templates/search_query.html",
-		"controllers/templates/search_query_form.html"))
+		"../controllers/templates/search_query.html",
+		"../controllers/templates/search_query_form.html"))
 
 func Get(w http.ResponseWriter, r *http.Request) {
 	if err := searchTemplate.Execute(w, nil); err != nil {
@@ -21,7 +21,7 @@ func Get(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-var newSearchQueryTemplate = template.Must(template.ParseFiles("controllers/templates/results.html"))
+var newSearchQueryTemplate = template.Must(template.ParseFiles("../controllers/templates/results.html"))
 
 func Post(w http.ResponseWriter, r *http.Request) {
 
