@@ -4,14 +4,11 @@ import (
 	"appengine"
 	"appengine/datastore"
 	"github.com/tlatin/simpletimeline/timeline"
+	"github.com/tlatin/simpletimeline/utils"
 	"html/template"
 	"net/http"
 )
 
-var timelineTemplate = template.Must(
-	template.ParseFiles(
-		"../controllers/templates/index.html",
-		"../controllers/templates/new_application_form.html"))
 
 func Get(w http.ResponseWriter, r *http.Request) {
 	c := appengine.NewContext(r)
@@ -33,6 +30,10 @@ func Get(w http.ResponseWriter, r *http.Request) {
 	// 	http.Error(w, err.Error(), http.StatusInternalServerError)
 	// 	return
 	// }
+	timelineTemplate := template.Must(
+		template.ParseFiles(
+			utils.GetTemplatePath() + "index.html",
+			utils.GetTemplatePath() + "new_application_form.html"))
 	if err := timelineTemplate.Execute(w, applications); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}

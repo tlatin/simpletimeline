@@ -4,18 +4,11 @@ import (
 	"appengine"
 	"errors"
 	"github.com/tlatin/simpletimeline/timeline"
+	"github.com/tlatin/simpletimeline/utils"
 	"html/template"
 	"net/http"
 	"regexp"
 )
-
-var newApplicationTemplate = template.Must(template.ParseFiles("../controllers/templates/results.html"))
-var applicationsTemplate = template.Must(
-	template.ParseFiles(
-		"../controllers/templates/applications.html",
-		"../controllers/templates/new_event_form.html",
-		"../controllers/templates/search_query.html",
-		"../controllers/templates/search_query_form.html"))
 
 func Get(w http.ResponseWriter, r *http.Request) {
 	c := appengine.NewContext(r)
@@ -38,7 +31,12 @@ func Get(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-
+	applicationsTemplate := template.Must(
+		template.ParseFiles(
+			utils.GetTemplatePath() + "applications.html",
+			utils.GetTemplatePath() + "new_event_form.html",
+			utils.GetTemplatePath() + "search_query.html",
+			utils.GetTemplatePath() + "search_query_form.html"))
 	if err := applicationsTemplate.Execute(w, application); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
@@ -65,6 +63,7 @@ func Post(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "/error_a", http.StatusFound)
 		return
 	}
+	// newApplicationTemplate := template.Must(template.ParseFiles(utils.GetTemplatePath() + "results.html"))
 	// if err := newApplicationTemplate.Execute(w, nil); err != nil {
 	// 	http.Error(w, err.Error(), http.StatusInternalServerError)
 	// 	http.Redirect(w, r, "/error_b", http.StatusFound)

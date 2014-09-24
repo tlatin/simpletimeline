@@ -5,23 +5,25 @@ import (
 	"appengine/datastore"
 	"encoding/json"
 	"github.com/tlatin/simpletimeline/timeline"
+	"github.com/tlatin/simpletimeline/utils"
 	"html/template"
 	"net/http"
 	"sort"
-)
 
-var searchTemplate = template.Must(
-	template.ParseFiles(
-		"../controllers/templates/search_query.html",
-		"../controllers/templates/search_query_form.html"))
+)
+	
 
 func Get(w http.ResponseWriter, r *http.Request) {
+	searchTemplate := template.Must(
+		template.ParseFiles(
+			utils.GetTemplatePath() + "search_query.html",
+			utils.GetTemplatePath() + "search_query_form.html"))
+
 	if err := searchTemplate.Execute(w, nil); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
 }
 
-var newSearchQueryTemplate = template.Must(template.ParseFiles("../controllers/templates/results.html"))
 
 func Post(w http.ResponseWriter, r *http.Request) {
 
@@ -56,6 +58,7 @@ func Post(w http.ResponseWriter, r *http.Request) {
 	}
 	sort.Sort(Timeline.ByDate(TimelineEvents))
 
+	var newSearchQueryTemplate = template.Must(template.ParseFiles(utils.GetTemplatePath() + "results.json"))
 	if err := newSearchQueryTemplate.Execute(w, TimelineEvents); err != nil {
 		c.Infof("failed to render search template")
 		http.Error(w, err.Error(), http.StatusInternalServerError)

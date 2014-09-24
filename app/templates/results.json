@@ -1,0 +1,3 @@
+[
+{{if . }}{{range $i, $e := .}}{{if $i}},{{else}} {{end}}{"date":{{.Date.Unix}}, "authorId":"{{.AuthorId}}", "content":"{{.Content}}"}
+{{end}}{{end}}]

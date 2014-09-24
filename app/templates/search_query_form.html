@@ -1,5 +1,5 @@
 {{define "search_query_form"}}
-<form action="/search/new" method="post">
+<form action="/search/new" method="post" Content-Type="application/json">
 	<table>
 		{{if .WebKey}}
 		<input type="hidden" size=140 name="applicationId" value="{{.WebKey}}"></input>
