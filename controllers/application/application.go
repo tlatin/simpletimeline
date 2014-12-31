@@ -39,6 +39,7 @@ func Get(w http.ResponseWriter, r *http.Request) {
 			utils.GetTemplatePath() + "search_query_form.html"))
 	if err := applicationsTemplate.Execute(w, application); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
 	}
 }
 

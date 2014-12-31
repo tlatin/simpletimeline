@@ -36,5 +36,6 @@ func Get(w http.ResponseWriter, r *http.Request) {
 			utils.GetTemplatePath() + "new_application_form.html"))
 	if err := timelineTemplate.Execute(w, applications); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
 	}
 }

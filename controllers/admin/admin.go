@@ -13,5 +13,6 @@ var adminTemplate = template.Must(template.ParseFiles(utils.GetTemplatePath() + 
 func Get(w http.ResponseWriter, r *http.Request) {
 	if err := adminTemplate.Execute(w, nil); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
 	}
 }

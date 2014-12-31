@@ -21,6 +21,7 @@ func Get(w http.ResponseWriter, r *http.Request) {
 
 	if err := searchTemplate.Execute(w, nil); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
 	}
 }
 
