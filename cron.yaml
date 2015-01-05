@@ -1,0 +1,4 @@
+cron:
+- description: daily cleanup
+  url: /cron
+  schedule: every day 00:00
