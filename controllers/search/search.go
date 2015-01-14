@@ -21,6 +21,8 @@ func Get(w http.ResponseWriter, r *http.Request) {
 
 	if err := searchTemplate.Execute(w, nil); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
+		c := appengine.NewContext(r)
+		c.Errorf("failed to render template.")
 		return
 	}
 }
@@ -34,7 +36,7 @@ func Post(w http.ResponseWriter, r *http.Request) {
 	applicationId := r.FormValue("applicationId")
 	applicationKey, err := datastore.DecodeKey(applicationId)
 	if err != nil {
-		c.Infof("Searching for posts by failed to decode applicationId: " + applicationId)
+		c.Errorf("Searching for posts by failed to decode applicationId: " + applicationId)
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
@@ -42,7 +44,7 @@ func Post(w http.ResponseWriter, r *http.Request) {
 	query := r.FormValue("query")
 	AuthorIds := make([]string, 0, 10)
 	if err := json.Unmarshal([]byte(query), &AuthorIds); err != nil {
-		c.Infof("Searching for posts by failed to unmarshall json:" + query)
+		c.Errorf("Searching for posts by failed to unmarshall json:" + query)
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
@@ -52,7 +54,7 @@ func Post(w http.ResponseWriter, r *http.Request) {
 		c.Infof("Searching for posts by " + authorId)
 		q := datastore.NewQuery("TimelineEvent").Ancestor(applicationKey).Filter("AuthorId =", authorId).Limit(25)
 		if _, err := q.GetAll(c, &TimelineEvents); err != nil {
-			c.Infof("GetAll query failed.")
+			c.Errorf("GetAll query failed.")
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
@@ -61,7 +63,7 @@ func Post(w http.ResponseWriter, r *http.Request) {
 
 	var newSearchQueryTemplate = template.Must(template.ParseFiles(utils.GetTemplatePath() + "results.json"))
 	if err := newSearchQueryTemplate.Execute(w, TimelineEvents); err != nil {
-		c.Infof("failed to render search template")
+		c.Errorf("failed to render search template")
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}

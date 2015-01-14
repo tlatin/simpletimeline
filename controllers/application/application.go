@@ -16,6 +16,7 @@ func Get(w http.ResponseWriter, r *http.Request) {
 	// Is there a better way to declare a string, not an empty string pointer?
 	applicationKey, err := parseApplicationKeyFromURL(r.URL.Path)
 	if err != nil {
+		c.Errorf("failed parse Application Key from URL.")
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
@@ -28,6 +29,7 @@ func Get(w http.ResponseWriter, r *http.Request) {
 	// }
 	application, err := Timeline.GetApplicationByEncodedKey(c, applicationKey)
 	if err != nil {
+		c.Errorf("The application key failed to return an Application object.")
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
@@ -38,6 +40,7 @@ func Get(w http.ResponseWriter, r *http.Request) {
 			utils.GetTemplatePath() + "search_query.html",
 			utils.GetTemplatePath() + "search_query_form.html"))
 	if err := applicationsTemplate.Execute(w, application); err != nil {
+		c.Errorf("failed to render template.")
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
@@ -60,8 +63,8 @@ func Post(w http.ResponseWriter, r *http.Request) {
 	// Validate URL
 	// Make sure it is absolute
 	if _, err := Timeline.NewApplication(c, name, url); err != nil {
+		c.Errorf("failed to create a new appliation.")
 		http.Error(w, err.Error(), http.StatusInternalServerError)
-		http.Redirect(w, r, "/error_a", http.StatusFound)
 		return
 	}
 	// newApplicationTemplate := template.Must(template.ParseFiles(utils.GetTemplatePath() + "results.html"))
