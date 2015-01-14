@@ -8,6 +8,7 @@ import (
 
 func Post(w http.ResponseWriter, r *http.Request) {
 	c := appengine.NewContext(r)
+	formRedirect := r.FormValue("formRedirect")
 	applicationKeyStr := r.FormValue("applicationKey")
 	applicationKey, err := Timeline.GetApplicationKeyByString(c, applicationKeyStr)
 	if err != nil {
@@ -21,5 +22,10 @@ func Post(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	// TODO: Don't redirect.
-	http.Redirect(w, r, "/application/"+applicationKeyStr, http.StatusFound)
+	if formRedirect != "" {
+		http.Redirect(w, r, "/application/"+applicationKeyStr, http.StatusFound)
+	} else {
+		w.WriteHeader(200)
+	}
+	
 }
