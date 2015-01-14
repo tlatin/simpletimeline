@@ -19,6 +19,7 @@ func Get(w http.ResponseWriter, r *http.Request) {
 	q := datastore.NewQuery("Application").Limit(10)
 	keys, err := q.GetAll(c, &applications)
 	if err != nil {
+		c.Errorf("Query to get all applications failed.")
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
@@ -35,6 +36,7 @@ func Get(w http.ResponseWriter, r *http.Request) {
 			utils.GetTemplatePath() + "index.html",
 			utils.GetTemplatePath() + "new_application_form.html"))
 	if err := timelineTemplate.Execute(w, applications); err != nil {
+		c.Errorf("failed to render template.")
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}

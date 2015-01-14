@@ -1,6 +1,7 @@
 A simple timeline service. Publish an event to the service with an author and content. Use search to return a sorted list of events from multiple authors.
 
 To develop locally:
+Update the SDK from here: https://cloud.google.com/appengine/downloads#Google_App_Engine_SDK_for_Go
 // From project directory
 % goapp serve app
 
