@@ -33,10 +33,10 @@ func Post(w http.ResponseWriter, r *http.Request) {
 	c := appengine.NewContext(r)
 	c.Infof("Call to search to log")
 
-	applicationId := r.FormValue("applicationId")
-	applicationKey, err := datastore.DecodeKey(applicationId)
+	applicationKeyStr := r.FormValue("applicationKey")
+	applicationKey, err := datastore.DecodeKey(applicationKeyStr)
 	if err != nil {
-		c.Errorf("Searching for posts by failed to decode applicationId: " + applicationId)
+		c.Errorf("Searching for posts by failed to decode applicationKey: " + applicationKeyStr)
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
