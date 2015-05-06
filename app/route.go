@@ -14,6 +14,7 @@ func init() {
 	http.HandleFunc("/application/", application.Get)
 	http.HandleFunc("/application/new", application.Post)
 	http.HandleFunc("/cron", cron.Get)
+	http.HandleFunc("/gc", cron.Post)
 	http.HandleFunc("/search", search.Get)
 	http.HandleFunc("/search/new", search.Post)
 	http.HandleFunc("/event/new", event.Post)
