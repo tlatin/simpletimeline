@@ -5,8 +5,8 @@ import (
 	// "github.com/tlatin/simpletimeline/timeline"
 	// "net/http"
 	"appengine/aetest"
-  "net/http/httptest"
-  "net/http"
+  // "net/http/httptest"
+  // "net/http"
 	"testing"
 )
 
