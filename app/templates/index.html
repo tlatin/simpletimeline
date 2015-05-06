@@ -12,7 +12,7 @@
       <tr><thead>URL</thead><thead>Name</thead></tr>
       {{range .}}
         <!-- TODO: URLs need to be fully qualified and verified! Otherwise this is a relative link-->
-        <tr><td><a href="{{.Url}}">{{.Url}}</a></td><td>{{.Name}}</td><td><a href="application/{{.WebKey}}">Details</a></td></tr>
+        <tr><td><a href="http://{{.Url}}">{{.Url}}</a></td><td>{{.Name}}</td><td><a href="application/{{.WebKey}}">Details</a></td></tr>
       {{end}}
     {{end}}
   </body>
