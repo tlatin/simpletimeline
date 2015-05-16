@@ -1,6 +1,7 @@
 package Timeline
 
 import (
+	"appengine"
 	"appengine/aetest"
 	"appengine/datastore"
 	"sort"
@@ -38,11 +39,7 @@ func TestNewEvent(t *testing.T) {
 
 	authorId := "This is an Author ID"
 	content := "this is the content"
-	key, err := NewEvent(c, nil, authorId, content)
-	if err != nil {
-		t.Error("Error Creating a new Event Object: " + err.Error())
-		return
-	}
+	key := CreateTestEvent(t, c, authorId, content)
 
 	event := new(Event)
 	if err := datastore.Get(c, key, event); err != nil {
@@ -63,12 +60,7 @@ func TestNewApplication(t *testing.T) {
 
 	name := "Example Name"
 	url := "http://example.com"
-	key, err := NewApplication(c, name, url)
-	if err != nil {
-		t.Error("Error Creating a new application: " + err.Error())
-		return
-	}
-
+	key := CreateTestApplication(t, c, name, url)
 	app := new(Application)
 	if err := datastore.Get(c, key, app); err != nil {
 		t.Error("Error getting application: " + err.Error())
@@ -77,7 +69,6 @@ func TestNewApplication(t *testing.T) {
 	} else if app.Url != url {
 		t.Error("Returned application has the url name")
 	}
-
 }
 
 func TestGetApplicationByEncodedKey(t *testing.T) {
@@ -89,12 +80,7 @@ func TestGetApplicationByEncodedKey(t *testing.T) {
 
 	name := "Example Name"
 	url := "http://example.com"
-	key, err := NewApplication(c, name, url)
-	if err != nil {
-		t.Error("Error Creating a new application: " + err.Error())
-		return
-	}
-
+	key := CreateTestApplication(t, c, name, url)
 	keystr := key.Encode()
 	if "" == keystr {
 		t.Error("The key string is empty.")
@@ -117,14 +103,7 @@ func TestGetApplicationKeyByString(t *testing.T) {
 	}
 	defer c.Close()
 
-	name := "Example Name"
-	url := "http://example.com"
-	key, err := NewApplication(c, name, url)
-	if err != nil {
-		t.Error("Error Creating a new application: " + err.Error())
-		return
-	}
-
+	key := CreateExampleApplication(t, c)
 	keystr := key.Encode()
 	if "" == keystr {
 		t.Error("The key string is empty.")
@@ -136,4 +115,38 @@ func TestGetApplicationKeyByString(t *testing.T) {
 	} else if !key.Equal(appkey) {
 		t.Error("GetApplicationKeyByString doesn't match the Put() key")
 	}
+}
+
+//
+// Helper Functions
+//
+
+func CreateExampleApplication(t *testing.T, c appengine.Context) (key *datastore.Key) {
+	name := "Example Name"
+	url := "http://example.com"
+	return CreateTestApplication(t, c, name, url)
+}
+
+func CreateTestApplication(t *testing.T, c appengine.Context, name string, url string) (key *datastore.Key) {
+	key, err := NewApplication(c, name, url)
+	if err != nil {
+		t.Error("Error Creating a new application: " + err.Error())
+		return
+	}
+	return key
+}
+
+func CreateExampleEvent(t *testing.T, c appengine.Context) (key *datastore.Key) {
+	authorId := "This is an Author ID"
+	content := "this is the content"
+	return CreateTestEvent(t, c, authorId, content)
+}
+
+func CreateTestEvent(t *testing.T, c appengine.Context, authorId string, content string) (key *datastore.Key) {
+	key, err := NewEvent(c, nil, authorId, content)
+	if err != nil {
+		t.Error("Error Creating a new Event Object: " + err.Error())
+		return
+	}
+	return key
 }
