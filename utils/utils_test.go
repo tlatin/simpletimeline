@@ -5,7 +5,6 @@ import (
   "strconv"
 )
 
-
 func TestGetRootPackageOffset(t *testing.T) { 
   base := "/Users/tlatins/gocode/src/github.com/tlatin/"
   offset := GetRootPackageOffset(base + rootPackageName)

@@ -3,6 +3,7 @@ package event
 import (
 	"appengine"
 	"github.com/tlatin/simpletimeline/timeline"
+	"github.com/tlatin/simpletimeline/utils"
 	"net/http"
 )
 
@@ -11,14 +12,11 @@ func Post(w http.ResponseWriter, r *http.Request) {
 	formRedirect := r.FormValue("formRedirect")
 	applicationKeyStr := r.FormValue("applicationKey")
 	applicationKey, err := Timeline.GetApplicationKeyByString(c, applicationKeyStr)
-	if err != nil {
-		c.Errorf("failed to find the application key.")
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+	if utils.CheckHandlerError(c, err, w, "failed to find the application key.") {
 		return
 	}
-	if _, err := Timeline.NewEvent(c, applicationKey, r.FormValue("authorId"), r.FormValue("content")); err != nil {
-		c.Errorf("failed to create a new event.")
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+	_, err = Timeline.NewEvent(c, applicationKey, r.FormValue("authorId"), r.FormValue("content"));
+	if utils.CheckHandlerError(c, err, w, "failed to create a new event.") {
 		return
 	}
 	// TODO: Don't redirect.

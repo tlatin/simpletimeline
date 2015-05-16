@@ -15,22 +15,12 @@ func Get(w http.ResponseWriter, r *http.Request) {
 
 	// Is there a better way to declare a string, not an empty string pointer?
 	applicationKey, err := parseApplicationKeyFromURL(r.URL.Path)
-	if err != nil {
-		c.Errorf("failed parse Application Key from URL.")
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+	if utils.CheckHandlerError(c, err, w, "failed parse Application Key from URL.") {
 		return
 	}
-	// re := regexp.MustCompile("^/application/([^/]+)$")
-	// if matches := re.FindStringSubmatch(r.URL.Path); len(matches) != 2 {
-	// 	http.Error(w, "Invalid application key", http.StatusInternalServerError)
-	// 	return
-	// } else {
-	// 	applicationKey = &matches[1]
-	// }
+
 	application, err := Timeline.GetApplicationByEncodedKey(c, applicationKey)
-	if err != nil {
-		c.Errorf("The application key failed to return an Application object.")
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+	if utils.CheckHandlerError(c, err, w, "The application key failed to return an Application object.") {
 		return
 	}
 	applicationsTemplate := template.Must(
@@ -39,9 +29,7 @@ func Get(w http.ResponseWriter, r *http.Request) {
 			utils.GetTemplatePath() + "new_event_form.html",
 			utils.GetTemplatePath() + "search_query.html",
 			utils.GetTemplatePath() + "search_query_form.html"))
-	if err := applicationsTemplate.Execute(w, application); err != nil {
-		c.Errorf("failed to render template.")
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+	if utils.CheckHandlerError(c, applicationsTemplate.Execute(w, application), w, "failed to render template.") {
 		return
 	}
 }
@@ -62,16 +50,8 @@ func Post(w http.ResponseWriter, r *http.Request) {
 	url := r.FormValue("url")
 	// Validate URL
 	// Make sure it is absolute
-	if _, err := Timeline.NewApplication(c, name, url); err != nil {
-		c.Errorf("failed to create a new appliation.")
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+	if _, err := Timeline.NewApplication(c, name, url); utils.CheckHandlerError(c, err, w, "failed to create a new appliation.") {
 		return
 	}
-	// newApplicationTemplate := template.Must(template.ParseFiles(utils.GetTemplatePath() + "results.html"))
-	// if err := newApplicationTemplate.Execute(w, nil); err != nil {
-	// 	http.Error(w, err.Error(), http.StatusInternalServerError)
-	// 	http.Redirect(w, r, "/error_b", http.StatusFound)
-	// 	return
-	// }
 	http.Redirect(w, r, "/", http.StatusFound)
 }

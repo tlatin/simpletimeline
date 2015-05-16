@@ -1,6 +1,8 @@
 package utils
 
 import (
+  "appengine"
+  "net/http"
   "os"
   "strings"
 )
@@ -27,5 +29,13 @@ func GetRootPackageOffset(path string) (offset int) {
   }
 
   return len(dirs) - rootOffset
+}
 
+func CheckHandlerError(c appengine.Context, err error, w http.ResponseWriter, message string) (isError bool) {
+  if err != nil {
+    c.Errorf(message)
+    http.Error(w, err.Error(), http.StatusInternalServerError)
+    return true
+  }
+  return false
 }

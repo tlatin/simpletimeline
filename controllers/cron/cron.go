@@ -4,14 +4,13 @@ import (
 	"appengine"
 	"appengine/datastore"
 	"github.com/tlatin/simpletimeline/utils"
-	// "github.com/tlatin/simpletimeline/timeline"
 	"html/template"
 	"net/http"
 	"time"
 )
 
 var cronTemplate = template.Must(template.ParseFiles(utils.GetTemplatePath() + "cron.html"))
-var timeWindow = time.Hour * 24 * 30 * 3 
+var timeWindow = time.Hour * 24 * 30 * 3 // Look at all events more than 90 days old
 
 type CronTemplateValues struct {
 	Keys []*datastore.Key
@@ -20,22 +19,13 @@ type CronTemplateValues struct {
 
 func Get(w http.ResponseWriter, r *http.Request) {
 	c := appengine.NewContext(r)
-	// List all of the events older than month.
-	// q := datastore.NewQuery("TimelineEvent").Filter("Date <", time.Now().Add(-1 * time.Hour * 24 * 30) )
-	// var oldTimelineEvents []Timeline.Event
-	// var err error
-	// if _, err := q.GetAll(c, &oldTimelineEvents); err != nil {
 	oldTimelineEvents, err := getEventsToDelete(c, timeWindow);
-	if err != nil {
-		c.Errorf("failed to load all timeline events.")
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+	if utils.CheckHandlerError(c, err, w, "failed to load all timeline events.") {
 		return
 	}
 
 	templateValues := CronTemplateValues{Keys: oldTimelineEvents, TimeWindow:timeWindow}
-	if err := cronTemplate.Execute(w, templateValues); err != nil {
-		c.Errorf("cron template failed to load.")
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+	if utils.CheckHandlerError(c, cronTemplate.Execute(w, templateValues), w, "cron template failed to load.") {
 		return
 	}
 }
@@ -43,16 +33,12 @@ func Get(w http.ResponseWriter, r *http.Request) {
 func Post(w http.ResponseWriter, r *http.Request) {
 	c := appengine.NewContext(r)
 	eventsArray, err := getEventsToDelete(c, timeWindow);
-	if err != nil {
-		c.Errorf("failed to load all timeline events.")
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+	if utils.CheckHandlerError(c, err, w, "failed to load all timeline events.") {
 		return
 	}
 
 	for _, eventKey := range eventsArray {
-		if err := datastore.Delete(c, eventKey); err != nil {
-			c.Errorf("event datastore failed to delete.")
-			http.Error(w, err.Error(), http.StatusInternalServerError)
+		if utils.CheckHandlerError(c, datastore.Delete(c, eventKey), w, "event datastore failed to delete.") {
 			return
 		}
 	}

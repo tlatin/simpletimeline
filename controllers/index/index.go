@@ -18,26 +18,21 @@ func Get(w http.ResponseWriter, r *http.Request) {
 	// So keeping it here for now.
 	q := datastore.NewQuery("Application").Limit(10)
 	keys, err := q.GetAll(c, &applications)
-	if err != nil {
-		c.Errorf("Query to get all applications failed.")
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+	if utils.CheckHandlerError(c, err, w, "Query to get all applications failed.") {
 		return
 	}
+
 	for i := range applications {
 		applications[i].WebKey = keys[i].Encode()
 	}
 
-	// if err := Timeline.GetAllApplications(c, applications, 10); err != nil {
-	// 	http.Error(w, err.Error(), http.StatusInternalServerError)
-	// 	return
-	// }
 	timelineTemplate := template.Must(
 		template.ParseFiles(
 			utils.GetTemplatePath() + "index.html",
 			utils.GetTemplatePath() + "new_application_form.html"))
-	if err := timelineTemplate.Execute(w, applications); err != nil {
-		c.Errorf("failed to render template.")
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+	
+	if utils.CheckHandlerError(c, timelineTemplate.Execute(w, applications), w, "failed to render index template.") {
 		return
 	}
+
 }

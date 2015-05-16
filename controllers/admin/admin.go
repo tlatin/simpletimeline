@@ -11,8 +11,7 @@ import (
 var adminTemplate = template.Must(template.ParseFiles(utils.GetTemplatePath() + "admin.html", utils.GetTemplatePath() + "new_application_form.html"))
 
 func Get(w http.ResponseWriter, r *http.Request) {
-	if err := adminTemplate.Execute(w, nil); err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+	if utils.CheckHandlerError(c, adminTemplate.Execute(w, nil), w, "admin template failed to load.") {
 		return
 	}
 }
