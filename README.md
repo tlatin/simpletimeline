@@ -9,7 +9,9 @@ On check-in:
 // Make sure GOPATH is set.
 // From project directory
 % goapp test ./...
-run gofmt
+run gofmt -d [filename] // to see the diff
+run gofmt -w [filename] // to update the file
+git rebase -i // to squash the gofmt changes
 
 To deploy:
 goapp deploy -oauth app
