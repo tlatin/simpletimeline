@@ -23,9 +23,8 @@ func TestDatastoreQuery(t *testing.T) {
 		t.Error("Error getting child object")
 	}
 
-	q := datastore.NewQuery("Child").Ancestor(parentKey)
-	var children []Child
-	_, err = q.GetAll(c, &children)
+	q := datastore.NewQuery("Child").Ancestor(parentKey).KeysOnly()
+	children, err := q.GetAll(c, nil)
 	if err != nil {
 		t.Error("Error in the query: " + err.Error())
 	}
@@ -50,9 +49,8 @@ func TestDatastoreQueryWithSleep(t *testing.T) {
 	}
 
 	time.Sleep(time.Second * 10)
-	q := datastore.NewQuery("Child").Ancestor(parentKey)
-	var children []Child
-	_, err = q.GetAll(c, &children)
+	q := datastore.NewQuery("Child").Ancestor(parentKey).KeysOnly()
+	children, err := q.GetAll(c, nil)
 	if err != nil {
 		t.Error("Error in the query: " + err.Error())
 	}

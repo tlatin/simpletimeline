@@ -65,9 +65,12 @@ func TestQueryEvent(t *testing.T) {
 	}
 
 	app, _ := CreateExampleEventWithApplication(t, c)
-	q := datastore.NewQuery("TimelineEvent").Ancestor(app).KeysOnly()//.Filter("Date <", time.Now().Add(-1 * hours))
+	q := datastore.NewQuery("TimelineEvent").Ancestor(app).KeysOnly()
 	eventKeys, err := q.GetAll(c, nil)
-	
+	if err != nil {
+		t.Error("Error in the query: " + err.Error())
+	}
+
 	if len(eventKeys) != 1 {
 		t.Errorf("TestQueryEvent expected 1 event, found %d", len(eventKeys))
 	}
@@ -156,7 +159,7 @@ func CreateTestApplication(t *testing.T, c appengine.Context, name string, url s
 		t.Error("Error Creating a new application: " + err.Error())
 		return
 	}
-	
+
 	// Doing a get to force consistency. Lame I know.
 	// http://stackoverflow.com/questions/24159413/gae-go-tests-do-datastore-queries-work-in-test-environment
 	app := new(Application)
@@ -182,7 +185,7 @@ func CreateExampleEvent(t *testing.T, c appengine.Context) (key *datastore.Key) 
 }
 
 func CreateTestEvent(t *testing.T, c appengine.Context, application *datastore.Key, authorId string, content string) (key *datastore.Key) {
-	key, err := NewEvent(c, nil, authorId, content)
+	key, err := NewEvent(c, application, authorId, content)
 	if err != nil {
 		t.Error("Error Creating a new Event Object: " + err.Error())
 		return
