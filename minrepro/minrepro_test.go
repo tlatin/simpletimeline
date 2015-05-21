@@ -27,7 +27,7 @@ func TestDatastoreQuery(t *testing.T) {
 func CreateAndRetrieveParent(c appengine.Context, t *testing.T) (key *datastore.Key) {
 	key, err := NewParent(c, "Alice")
 	if err != nil {
-		t.Error("Error Creating a new parent datstore object")
+		t.Error("Error Creating a new parent datstore object: " + err.Error())
 		return nil
 	}
 

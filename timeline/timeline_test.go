@@ -39,7 +39,7 @@ func TestNewEvent(t *testing.T) {
 
 	authorId := "This is an Author ID"
 	content := "this is the content"
-	key := CreateTestEvent(t, c, authorId, content)
+	key := CreateTestEvent(t, c, nil, authorId, content)
 
 	event := new(Event)
 	if err := datastore.Get(c, key, event); err != nil {
@@ -49,6 +49,29 @@ func TestNewEvent(t *testing.T) {
 	} else if event.Content != content {
 		t.Error("Returned event has the wrong content")
 	}
+}
+
+func TestQueryEvent(t *testing.T) {
+	c, err := aetest.NewContext(nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer c.Close()
+
+	key := CreateExampleEvent(t, c)
+	event := new(Event)
+	if err := datastore.Get(c, key, event); err != nil {
+		t.Error("Error getting Event: " + err.Error())
+	}
+
+	app, _ := CreateExampleEventWithApplication(t, c)
+	q := datastore.NewQuery("TimelineEvent").Ancestor(app).KeysOnly()//.Filter("Date <", time.Now().Add(-1 * hours))
+	eventKeys, err := q.GetAll(c, nil)
+	
+	if len(eventKeys) != 1 {
+		t.Errorf("TestQueryEvent expected 1 event, found %d", len(eventKeys))
+	}
+
 }
 
 func TestNewApplication(t *testing.T) {
@@ -133,20 +156,43 @@ func CreateTestApplication(t *testing.T, c appengine.Context, name string, url s
 		t.Error("Error Creating a new application: " + err.Error())
 		return
 	}
+	
+	// Doing a get to force consistency. Lame I know.
+	// http://stackoverflow.com/questions/24159413/gae-go-tests-do-datastore-queries-work-in-test-environment
+	app := new(Application)
+	if err := datastore.Get(c, key, app); err != nil {
+		t.Error("Error getting application: " + err.Error())
+	}
 	return key
+}
+
+func CreateExampleEventWithApplication(t *testing.T, c appengine.Context) (app *datastore.Key, event *datastore.Key) {
+	app = CreateExampleApplication(t, c)
+	authorId := "This is an Author ID"
+	content := "this is the content"
+	event = CreateTestEvent(t, c, app, authorId, content)
+	return app, event
+
 }
 
 func CreateExampleEvent(t *testing.T, c appengine.Context) (key *datastore.Key) {
 	authorId := "This is an Author ID"
 	content := "this is the content"
-	return CreateTestEvent(t, c, authorId, content)
+	return CreateTestEvent(t, c, nil, authorId, content)
 }
 
-func CreateTestEvent(t *testing.T, c appengine.Context, authorId string, content string) (key *datastore.Key) {
+func CreateTestEvent(t *testing.T, c appengine.Context, application *datastore.Key, authorId string, content string) (key *datastore.Key) {
 	key, err := NewEvent(c, nil, authorId, content)
 	if err != nil {
 		t.Error("Error Creating a new Event Object: " + err.Error())
 		return
+	}
+
+	// Doing a get to force consistency. Lame I know.
+	// http://stackoverflow.com/questions/24159413/gae-go-tests-do-datastore-queries-work-in-test-environment
+	event := new(Event)
+	if err := datastore.Get(c, key, event); err != nil {
+		t.Error("Error getting Event: " + err.Error())
 	}
 	return key
 }
