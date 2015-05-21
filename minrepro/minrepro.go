@@ -24,5 +24,5 @@ func NewChild(c appengine.Context, parent *datastore.Key, name string) (key *dat
 	child := Child{
 		Name: name,
 	}
-	return datastore.Put(c, datastore.NewIncompleteKey(c, "Parent", parent), &child)
+	return datastore.Put(c, datastore.NewIncompleteKey(c, "Child", parent), &child)
 }
