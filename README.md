@@ -14,7 +14,7 @@ run gofmt -w [filename] // to update the file
 git rebase -i // to squash the gofmt changes
 
 To deploy:
-goapp deploy -oauth app
+./deploy.sh
 
 TODO:
 	Add testing for controllers
