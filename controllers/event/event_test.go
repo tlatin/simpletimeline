@@ -17,18 +17,17 @@ func TestEventPost(t *testing.T) {
 
 	defer c.Close()
 
-  // r, _ := http.NewRequest("GET", "/", nil)
-  // w := httptest.NewRecorder()
-  // myNewHandler(c, w, r)
-  // if 200 != w.Code {
-  //     t.Fail()
-  // }
+	// r, _ := http.NewRequest("GET", "/", nil)
+	// w := httptest.NewRecorder()
+	// myNewHandler(c, w, r)
+	// if 200 != w.Code {
+	//     t.Fail()
+	// }
 
-
-    // req, _ := http.NewRequest("GET", "", nil)
-    // w := httptest.NewRecorder()
-    // if w.Code != http.StatusOK {
-    //     t.Errorf("Home page didn't return %v", http.StatusOK)
-    // }
+	// req, _ := http.NewRequest("GET", "", nil)
+	// w := httptest.NewRecorder()
+	// if w.Code != http.StatusOK {
+	//     t.Errorf("Home page didn't return %v", http.StatusOK)
+	// }
 
 }

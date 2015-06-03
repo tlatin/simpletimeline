@@ -9,7 +9,7 @@ import (
 	"net/http"
 )
 
-var adminTemplate = template.Must(template.ParseFiles(utils.GetTemplatePath() + "admin.html", utils.GetTemplatePath() + "new_application_form.html"))
+var adminTemplate = template.Must(template.ParseFiles(utils.GetTemplatePath()+"admin.html", utils.GetTemplatePath()+"new_application_form.html"))
 
 func Get(w http.ResponseWriter, r *http.Request) {
 	c := appengine.NewContext(r)

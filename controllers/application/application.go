@@ -25,10 +25,10 @@ func Get(w http.ResponseWriter, r *http.Request) {
 	}
 	applicationsTemplate := template.Must(
 		template.ParseFiles(
-			utils.GetTemplatePath() + "applications.html",
-			utils.GetTemplatePath() + "new_event_form.html",
-			utils.GetTemplatePath() + "search_query.html",
-			utils.GetTemplatePath() + "search_query_form.html"))
+			utils.GetTemplatePath()+"applications.html",
+			utils.GetTemplatePath()+"new_event_form.html",
+			utils.GetTemplatePath()+"search_query.html",
+			utils.GetTemplatePath()+"search_query_form.html"))
 	if utils.CheckHandlerError(c, applicationsTemplate.Execute(w, application), w, "failed to render template.") {
 		return
 	}

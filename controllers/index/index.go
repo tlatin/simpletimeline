@@ -9,7 +9,6 @@ import (
 	"net/http"
 )
 
-
 func Get(w http.ResponseWriter, r *http.Request) {
 	c := appengine.NewContext(r)
 
@@ -28,9 +27,9 @@ func Get(w http.ResponseWriter, r *http.Request) {
 
 	timelineTemplate := template.Must(
 		template.ParseFiles(
-			utils.GetTemplatePath() + "index.html",
-			utils.GetTemplatePath() + "new_application_form.html"))
-	
+			utils.GetTemplatePath()+"index.html",
+			utils.GetTemplatePath()+"new_application_form.html"))
+
 	if utils.CheckHandlerError(c, timelineTemplate.Execute(w, applications), w, "failed to render index template.") {
 		return
 	}

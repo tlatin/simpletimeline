@@ -15,7 +15,7 @@ func Post(w http.ResponseWriter, r *http.Request) {
 	if utils.CheckHandlerError(c, err, w, "failed to find the application key.") {
 		return
 	}
-	_, err = Timeline.NewEvent(c, applicationKey, r.FormValue("authorId"), r.FormValue("content"));
+	_, err = Timeline.NewEvent(c, applicationKey, r.FormValue("authorId"), r.FormValue("content"))
 	if utils.CheckHandlerError(c, err, w, "failed to create a new event.") {
 		return
 	}
@@ -25,5 +25,5 @@ func Post(w http.ResponseWriter, r *http.Request) {
 	} else {
 		w.WriteHeader(200)
 	}
-	
+
 }

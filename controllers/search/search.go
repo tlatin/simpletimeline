@@ -15,8 +15,8 @@ func Get(w http.ResponseWriter, r *http.Request) {
 	c := appengine.NewContext(r)
 	searchTemplate := template.Must(
 		template.ParseFiles(
-			utils.GetTemplatePath() + "search_query.html",
-			utils.GetTemplatePath() + "search_query_form.html"))
+			utils.GetTemplatePath()+"search_query.html",
+			utils.GetTemplatePath()+"search_query_form.html"))
 
 	if utils.CheckHandlerError(c, searchTemplate.Execute(w, nil), w, "failed to render template.") {
 		return
@@ -30,13 +30,13 @@ func Post(w http.ResponseWriter, r *http.Request) {
 
 	applicationKeyStr := r.FormValue("applicationKey")
 	applicationKey, err := datastore.DecodeKey(applicationKeyStr)
-	if utils.CheckHandlerError(c, err, w, "Searching for posts by failed to decode applicationKey: " + applicationKeyStr) {
+	if utils.CheckHandlerError(c, err, w, "Searching for posts by failed to decode applicationKey: "+applicationKeyStr) {
 		return
 	}
 
 	query := r.FormValue("query")
 	AuthorIds := make([]string, 0, 10)
-	if utils.CheckHandlerError(c, json.Unmarshal([]byte(query), &AuthorIds), w, "Searching for posts by failed to unmarshall json:" + query) {
+	if utils.CheckHandlerError(c, json.Unmarshal([]byte(query), &AuthorIds), w, "Searching for posts by failed to unmarshall json:"+query) {
 		return
 	}
 
