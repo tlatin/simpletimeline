@@ -1,0 +1,3 @@
+queue:
+- name: gc
+  rate: 5.00/s

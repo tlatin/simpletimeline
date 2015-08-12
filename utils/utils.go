@@ -17,7 +17,7 @@ func GetTemplatePath() (path string) {
 
 	if appengine.IsDevAppServer() {
 		return strings.Repeat("../", GetRootPackageOffset(path)) + "app/templates/"
-	} else { 
+	} else {
 		// The production environment has a different directory structure
 		return "templates/"
 	}

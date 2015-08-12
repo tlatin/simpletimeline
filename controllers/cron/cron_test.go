@@ -35,7 +35,7 @@ func TestGetEventsToDelete(t *testing.T) {
 	}
 
 	// Should return all events
-	eventKeys, err := getEventsToDelete(c, 0*time.Hour)
+	eventKeys, err := getEventsToDelete(c, 0*time.Hour, 1000)
 	if err != nil {
 		t.Fatalf("error getting events to delete", err)
 	}
@@ -44,7 +44,7 @@ func TestGetEventsToDelete(t *testing.T) {
 	}
 
 	// Should return 2 of the 3 events created
-	eventKeys, err = getEventsToDelete(c, timeWindow)
+	eventKeys, err = getEventsToDelete(c, timeWindow, 1000)
 	if err != nil {
 		t.Fatalf("error getting events to delete", err)
 	}
