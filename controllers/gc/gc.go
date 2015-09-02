@@ -10,24 +10,40 @@ import (
 	"time"
 )
 
-var defaultGcAge = time.Hour * 24 * 30 * 12 // default to 1 year
-var defaultLimit = 10000
-
+var defaultGcAge = time.Hour * 24 * 30 * 9 // default to 9 months
+var defaultLimit = 100
 func Post(w http.ResponseWriter, r *http.Request) {
 	c := appengine.Timeout(appengine.NewContext(r), 60*time.Second)
-
+	c.Debugf("Cleaning up old tasks")
 	age, err := GetHours(r.FormValue("age"))
+	limit := defaultLimit
 	if err != nil {
-		c.Errorf("error parsing age param. Using default of 1 year")
+		c.Warningf("error parsing age param. Using default of 1 year")
 	}
-	q := GetQuery(age, defaultLimit)
-	complete, err := RunQuery(c, q, defaultLimit)
+	c.Debugf("Generating Query")
+	q := GetQuery(age, limit)
+	c.Debugf("Gathering Events")
+	events, err := q.GetAll(c, nil)
 	if err != nil {
-		// log something
+		c.Errorf("error gathering events: " + err.Error())
+		return
 	}
-	if complete != true {
+	c.Debugf("Deleting Events")
+	err = datastore.DeleteMulti(c, events)
+	if err != nil {
+		c.Errorf("error deleting events: " + err.Error())
+		return
+	}
+
+	if len(events) == limit {
+		c.Infof("Creating a task to delete more items.")
 		t := taskqueue.NewPOSTTask("/gc", url.Values{"age": {strconv.FormatFloat(time.Duration.Hours(age), 'f', 0, 64)}})
-		taskqueue.Add(c, t, "gc")
+		_, err = taskqueue.Add(c, t, "gc")
+		if err != nil {
+			c.Errorf("error creating task: " + err.Error())
+		}
+	} else {
+		c.Infof("Finished deleting all items!")
 	}
 }
 
@@ -43,24 +59,4 @@ func GetQuery(hours time.Duration, limit int) (q *datastore.Query) {
 	// limit 10000 because I don't see how to catch deadline exceptions
 	q = datastore.NewQuery("TimelineEvent").KeysOnly().Filter("Date <", time.Now().Add(-1*hours)).Limit(limit)
 	return q
-}
-
-// To determine if the clean up is complete, check to see if the expected number events was deleted.
-func RunQuery(c appengine.Context, q *datastore.Query, finishedCount int) (complete bool, err error) {
-	deleted := 0
-	for i := q.Run(c); ; {
-		key, err := i.Next(nil)
-		if err != nil {
-			// If you've finished the query and deleted LESS than the total number expected, you've deleted all the items to gc.
-			if err == datastore.Done && deleted < finishedCount {
-				return true, nil
-			}
-			return false, nil
-		}
-
-		datastore.Delete(c, key)
-		deleted++
-		time.Sleep(time.Second * 5)
-	}
-	return false, nil
 }
